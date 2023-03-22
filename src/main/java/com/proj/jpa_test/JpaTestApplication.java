@@ -22,12 +22,20 @@ public class JpaTestApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (int i = 0; i < 100; i++){
-            patientRepository.save(new Patient(null,"kouba",new Date(),Math.random()>0.5?true:false,(int)(Math.random()*100)));
-        }
-        patientRepository.save(new Patient(null,"kouba",new Date(),false,56));
-        patientRepository.save(new Patient(null,"ahmed",new Date(),true,85));
-        patientRepository.save(new Patient(null,"reda",new Date(),false,12));
+//        for (int i = 0; i < 100; i++){
+//            patientRepository.save(new Patient(null,"kouba",new Date(),Math.random()>0.5?true:false,(int)(Math.random()*100)));
+//        }
+//        patientRepository.save(new Patient(null,"kouba",new Date(),false,56));
+//        patientRepository.save(new Patient(null,"ahmed",new Date(),true,85));
+//        patientRepository.save(new Patient(null,"reda",new Date(),false,12));
+
+        // update :
+        Patient newpat = patientRepository.findById(8L).orElse(null);
+        newpat.setScore(200);
+        patientRepository.save(newpat);
+        // delete :
+//        patientRepository.deleteById(10L);
+        patientRepository.deleteById(9L);
         Page<Patient> patients = patientRepository.findAll(PageRequest.of(1,5));
         System.out.println("Total pages : " + patients.getTotalPages());
         System.out.println("Total elements : "+patients.getTotalElements());
@@ -51,6 +59,15 @@ public class JpaTestApplication implements CommandLineRunner {
             System.out.println(p.getScore());
         });
         System.out.println("*********************************");
+        List<Patient> serPatient = patientRepository.chercherPatient("%k%",80);
+        serPatient.forEach(p->{
+            System.out.println("-=--=-=-=-=-=-=-=-=-=-");
+            System.out.println(p.getId());
+            System.out.println(p.getNom());
+            System.out.println(p.getDateNaissance());
+            System.out.println(p.isMalade());
+            System.out.println(p.getScore());
+        });
 //        Patient patient = patientRepository.findById(1L).orElse(null);
 //        if (patient!=null){
 //            System.out.println(patient.getNom());

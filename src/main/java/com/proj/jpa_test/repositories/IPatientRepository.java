@@ -17,6 +17,9 @@ public interface IPatientRepository extends JpaRepository<Patient,Long> {
 //    Page<Patient> findAll();
     Page<Patient> findByMalade(boolean m, Pageable pageable);
 
+    @Query("select p from Patient p where p.nom like :x")
+    Page<Patient> chercherPatients(@Param("x")String mc,Pageable pageable);
+
     @Query("select p from Patient p where p.nom like :x and p.score<:y")
     List<Patient> chercherPatient(@Param("x") String nom, @Param("y") int scoreMin);
 
